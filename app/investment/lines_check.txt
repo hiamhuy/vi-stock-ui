@@ -1,0 +1,4 @@
+﻿                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{t('investmentRange')}</p>
+                                    <p className="font-bold text-blue-500 text-sm md:text-base">
+                                      ${Number(project.minInvest).toLocaleString()} - ${Number(project.maxInvest).toLocaleString()}
+                                    </p>
