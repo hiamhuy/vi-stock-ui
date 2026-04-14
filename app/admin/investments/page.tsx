@@ -259,7 +259,7 @@ export default function AdminInvestments() {
                     <td className="p-4">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-gray-800">
-                           <img src={project.image.startsWith('/') ? `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace('/api', '')}${project.image}` : project.image} className="w-full h-full object-cover" alt="" />
+                           <img src={project.image.startsWith('/') ? `${(process.env.NEXT_PUBLIC_API_URL || 'https://api.vi-stocks.com').replace('/api', '')}${project.image}` : project.image} className="w-full h-full object-cover" alt="" />
                         </div>
                         <div>
                           <p className="font-bold group-hover:text-blue-500 transition-colors">{project.name}</p>
@@ -396,7 +396,7 @@ export default function AdminInvestments() {
                          <div className="relative group shrink-0">
                             <div className="w-32 h-32 rounded-2xl bg-gray-900 border-2 border-dashed border-gray-800 overflow-hidden flex items-center justify-center transition-all group-hover:border-blue-500/50">
                                {formData.image ? (
-                                  <img src={formData.image.startsWith('/') ? `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace('/api', '')}${formData.image}` : formData.image} className="w-full h-full object-cover" alt="" />
+                                  <img src={formData.image.startsWith('/') ? `${(process.env.NEXT_PUBLIC_API_URL || 'https://api.vi-stocks.com').replace('/api', '')}${formData.image}` : formData.image} className="w-full h-full object-cover" alt="" />
                                ) : (
                                   <Building2 size={32} className="text-gray-700" />
                                )}

@@ -27,7 +27,7 @@ export function getImageUrl(path: string | undefined): string {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   
   // Get base URL from environment or fallback, removing trailing /api if present
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.vi-stocks.com';
   const baseUrl = apiUrl.replace(/\/api$/, '').replace(/\/$/, '');
   
   return `${baseUrl}${normalizedPath}`;
