@@ -49,8 +49,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    getAuth()
+  }, [user, token]);
+  
   // Khởi tạo: đọc token từ localStorage
   useEffect(() => {
+    getAuth()
+  }, []);
+
+  const getAuth = () => {
     const savedToken = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
 
@@ -117,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
     setIsLoading(false);
-  }, []);
+  }
 
   // Tự động làm mới dữ liệu người dùng khi đã có token
   useEffect(() => {
