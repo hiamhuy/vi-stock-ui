@@ -366,17 +366,17 @@ export default function AdminSupportPage() {
                                 <div className="mt-2">
                                   {isVideo(msg.imageUrl) ? (
                                     <video 
-                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                       controls 
                                       className="rounded-lg max-w-[240px] h-auto border border-white/10 shadow-lg"
                                     />
                                   ) : (
                                     <div className="relative group/img">
                                       <img 
-                                        src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                        src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                         alt="Uploaded" 
                                         className="rounded-lg max-w-[200px] max-h-[200px] object-cover cursor-zoom-in border border-white/10 transition-all hover:opacity-80 shadow-md"
-                                        onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', ''), '_blank')}
+                                        onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1"), '_blank')}
                                       />
                                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 pointer-events-none transition-opacity">
                                         <span className="bg-black/60 text-[10px] px-2 py-1 rounded text-white">Click to enlarge</span>

@@ -226,16 +226,16 @@ export default function ChatWidget() {
                           <div className="mt-1">
                             {isVideo(msg.imageUrl) ? (
                               <video 
-                                src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                 controls 
                                 className="rounded-lg max-w-[200px] h-auto border border-white/10 shadow-sm"
                               />
                             ) : (
                               <img 
-                                src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                 alt="Uploaded" 
                                 className="rounded-lg max-w-[180px] max-h-[180px] object-cover cursor-zoom-in border border-white/10 hover:brightness-110 transition-all shadow-sm"
-                                onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', ''), '_blank')}
+                                onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1"), '_blank')}
                               />
                             )}
                           </div>

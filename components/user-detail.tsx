@@ -243,7 +243,7 @@ export default function UserDetail({ userId, onBack }: UserDetailProps) {
                   <label className="text-[10px] text-gray-500 uppercase font-bold block mb-2">Ảnh mặt trước</label>
                   {profile.idFrontPhoto ? (
                     <img 
-                      src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${profile.idFrontPhoto}`} 
+                      src={`${process.env.NEXT_PUBLIC_API_URL?.replace(/(https?:\/\/[^/]+)\/api/, "$1")}${profile.idFrontPhoto}`} 
                       className="w-full h-24 object-cover rounded-lg border border-gray-800 hover:scale-[3] transition-transform cursor-zoom-in z-50 origin-right" 
                       alt="Front ID" 
                     />
@@ -253,7 +253,7 @@ export default function UserDetail({ userId, onBack }: UserDetailProps) {
                   <label className="text-[10px] text-gray-500 uppercase font-bold block mb-2">Ảnh mặt sau</label>
                   {profile.idBackPhoto ? (
                     <img 
-                      src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${profile.idBackPhoto}`} 
+                      src={`${process.env.NEXT_PUBLIC_API_URL?.replace(/(https?:\/\/[^/]+)\/api/, "$1")}${profile.idBackPhoto}`} 
                       className="w-full h-24 object-cover rounded-lg border border-gray-800 hover:scale-[3] transition-transform cursor-zoom-in z-50 origin-right" 
                       alt="Back ID" 
                     />

@@ -49,10 +49,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    getAuth()
-  }, [user, token]);
-  
   // Khởi tạo: đọc token từ localStorage
   useEffect(() => {
     getAuth()

@@ -217,16 +217,16 @@ export default function UserSupportPage() {
                                 <div className="mt-2">
                                   {isVideo(msg.imageUrl) ? (
                                     <video 
-                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                       controls 
                                       className="rounded-xl w-full max-w-[280px] h-auto border border-white/10 shadow-lg"
                                     />
                                   ) : (
                                     <img 
-                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', '')} 
+                                      src={`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1")} 
                                       alt="Uploaded" 
                                       className="rounded-xl w-full max-w-[280px] max-h-[400px] object-cover cursor-zoom-in border border-white/10 hover:opacity-90 transition-opacity"
-                                      onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace('/api', ''), '_blank')}
+                                      onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}${msg.imageUrl}`.replace(/(https?:\/\/[^/]+)\/api/, "$1"), '_blank')}
                                     />
                                   )}
                                 </div>
