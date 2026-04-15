@@ -118,22 +118,6 @@ export default function UserSupportPage() {
 
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const messageInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const resizeMessageInput = () => {
-    const textarea = messageInputRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    const computedStyle = window.getComputedStyle(textarea);
-    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
-    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
-    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
-    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
-
-    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  };
 
   const handleSendMessage = (content?: string, imageUrl?: string) => {
     const textMsg = content || newMessage.trim();
@@ -147,10 +131,7 @@ export default function UserSupportPage() {
       imageUrl: imageUrl || undefined
     });
 
-    if (!content) {
-      setNewMessage('');
-      requestAnimationFrame(() => resizeMessageInput());
-    }
+    if (!content) setNewMessage('');
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -281,32 +262,18 @@ export default function UserSupportPage() {
                     {isUploading ? <Loader2 className="animate-spin" size={18} /> : <ImageIcon size={20} />}
                   </Button>
                   <textarea 
-                    ref={messageInputRef}
                     placeholder={t('supportPlaceholder')} 
                     className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
-                    rows={1}
                     value={newMessage}
-                    onChange={e => {
-                      setNewMessage(e.target.value);
-                      resizeMessageInput();
-                    }}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault(); // chặn xuống dòng mặc định
+                    onChange={e => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
                         handleSendMessage();
                       }
                     }}
                     disabled={isUploading}
                   />
-                  {/* <input 
-                    type="text" 
-                    placeholder={t('supportPlaceholder')} 
-                    className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-xl px-4 md:px-6 py-3 md:py-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all text-white shadow-inner placeholder:text-gray-800"
-                    value={newMessage}
-                    onChange={e => setNewMessage(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-                    disabled={isUploading}
-                  /> */}
                   <Button 
                     onClick={() => handleSendMessage()}
                     disabled={(!newMessage.trim() && !isUploading) || isUploading}

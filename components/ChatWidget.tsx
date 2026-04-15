@@ -123,23 +123,6 @@ export default function ChatWidget() {
     createdAt: string;
   }
 
-  const messageInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const resizeMessageInput = () => {
-    const textarea = messageInputRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    const computedStyle = window.getComputedStyle(textarea);
-    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
-    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
-    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
-    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
-
-    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  };
-
   const handleSendMessage = (content?: string, imageUrl?: string) => {
     const textMsg = content || newMessage.trim();
     if (!textMsg && !imageUrl) return;
@@ -154,7 +137,6 @@ export default function ChatWidget() {
 
     if (!content) setNewMessage('');
   };
-
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -177,7 +159,6 @@ export default function ChatWidget() {
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
-
 
   if (!isAuthenticated || user?.role === 'admin') return null;
 
@@ -301,32 +282,18 @@ export default function ChatWidget() {
                   {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageIcon size={18} />}
                 </Button>
                 <textarea 
-                    ref={messageInputRef}
-                    placeholder={t('supportPlaceholder')} 
-                    className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
-                    rows={1}
-                    value={newMessage}
-                    onChange={e => {
-                      setNewMessage(e.target.value);
-                      resizeMessageInput();
-                    }}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault(); // chặn xuống dòng mặc định
-                        handleSendMessage();
-                      }
-                    }}
-                    disabled={isUploading}
-                  />
-                {/* <input 
-                  type="text" 
                   placeholder={t('supportPlaceholder')} 
-                  className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white"
+                  className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
                   value={newMessage}
                   onChange={e => setNewMessage(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
                   disabled={isUploading}
-                /> */}
+                />
                 <Button 
                     size="icon"
                     onClick={() => handleSendMessage()}
