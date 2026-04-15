@@ -435,6 +435,7 @@ export default function AdminSupportPage() {
                   value={newMessage}
                   onChange={e => setNewMessage(e.target.value)}
                   onKeyPress={(e) => {
+                    if (window.matchMedia('(max-width: 1024px)').matches) return;
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
                       handleSendMessage();
