@@ -327,7 +327,6 @@ export default function AdminSupportPage() {
                     variant="outline" 
                     size="sm" 
                     onClick={() => {
-                      console.log('手动点击 Test Sound');
                       playNotificationSound();
                     }}
                     className="bg-blue-600/10 border-blue-500/30 text-blue-500 hover:bg-blue-600 hover:text-white text-[10px] font-black uppercase"

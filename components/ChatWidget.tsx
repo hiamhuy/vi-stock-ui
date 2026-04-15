@@ -262,7 +262,7 @@ export default function ChatWidget() {
                 ))}
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <input 
                   type="file" 
                   ref={fileInputRef}
@@ -279,7 +279,20 @@ export default function ChatWidget() {
                 >
                   {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageIcon size={18} />}
                 </Button>
-                <input 
+                <textarea 
+                  placeholder={t('supportPlaceholder')} 
+                  className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
+                  value={newMessage}
+                  onChange={e => setNewMessage(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault(); // chặn xuống dòng mặc định
+                      handleSendMessage();
+                    }
+                  }}
+                  disabled={isUploading}
+                />
+                {/* <input 
                   type="text" 
                   placeholder={t('supportPlaceholder')} 
                   className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white"
@@ -287,7 +300,7 @@ export default function ChatWidget() {
                   onChange={e => setNewMessage(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                   disabled={isUploading}
-                />
+                /> */}
                 <Button 
                     size="icon"
                     onClick={() => handleSendMessage()}

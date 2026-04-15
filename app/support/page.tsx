@@ -245,7 +245,7 @@ export default function UserSupportPage() {
 
               {/* Input Area */}
               <div className="p-4 md:p-6 bg-[#080808] border-t border-[#1a1a2e] shrink-0">
-                <div className="flex gap-2 md:gap-3">
+                <div className="flex gap-2 md:gap-3 items-center">
                   <input 
                     type="file" 
                     ref={fileInputRef}
@@ -261,7 +261,20 @@ export default function UserSupportPage() {
                   >
                     {isUploading ? <Loader2 className="animate-spin" size={18} /> : <ImageIcon size={20} />}
                   </Button>
-                  <input 
+                  <textarea 
+                    placeholder={t('supportPlaceholder')} 
+                    className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
+                    value={newMessage}
+                    onChange={e => setNewMessage(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault(); // chặn xuống dòng mặc định
+                        handleSendMessage();
+                      }
+                    }}
+                    disabled={isUploading}
+                  />
+                  {/* <input 
                     type="text" 
                     placeholder={t('supportPlaceholder')} 
                     className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-xl px-4 md:px-6 py-3 md:py-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all text-white shadow-inner placeholder:text-gray-800"
@@ -269,7 +282,7 @@ export default function UserSupportPage() {
                     onChange={e => setNewMessage(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                     disabled={isUploading}
-                  />
+                  /> */}
                   <Button 
                     onClick={() => handleSendMessage()}
                     disabled={(!newMessage.trim() && !isUploading) || isUploading}
