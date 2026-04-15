@@ -123,6 +123,23 @@ export default function ChatWidget() {
     createdAt: string;
   }
 
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const resizeMessageInput = () => {
+    const textarea = messageInputRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const computedStyle = window.getComputedStyle(textarea);
+    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
+    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
+    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
+    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
+
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+  };
+
   const handleSendMessage = (content?: string, imageUrl?: string) => {
     const textMsg = content || newMessage.trim();
     if (!textMsg && !imageUrl) return;
@@ -137,6 +154,7 @@ export default function ChatWidget() {
 
     if (!content) setNewMessage('');
   };
+
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -160,24 +178,8 @@ export default function ChatWidget() {
     }
   };
 
+
   if (!isAuthenticated || user?.role === 'admin') return null;
-
-  const messageInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const resizeMessageInput = () => {
-    const textarea = messageInputRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    const computedStyle = window.getComputedStyle(textarea);
-    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
-    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
-    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
-    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
-
-    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  };
 
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">

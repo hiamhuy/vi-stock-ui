@@ -29,6 +29,7 @@ interface Message {
   sender?: {
     email: string;
     fullName: string | null;
+    phone?: string | null;
   };
 }
 
@@ -187,6 +188,22 @@ export default function AdminSupportPage() {
 
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const resizeMessageInput = () => {
+    const textarea = messageInputRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const computedStyle = window.getComputedStyle(textarea);
+    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
+    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
+    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
+    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
+
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+  };
 
   const handleSendMessage = (content?: string, imageUrl?: string) => {
     const textMsg = content || newMessage.trim();
@@ -238,23 +255,6 @@ export default function AdminSupportPage() {
   );
 
   if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center text-gray-500">{t('loading')}</div>;
-
-  const messageInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const resizeMessageInput = () => {
-    const textarea = messageInputRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    const computedStyle = window.getComputedStyle(textarea);
-    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
-    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
-    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
-    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
-
-    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  };
 
   return (
     <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
