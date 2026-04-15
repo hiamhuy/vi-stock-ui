@@ -162,6 +162,23 @@ export default function ChatWidget() {
 
   if (!isAuthenticated || user?.role === 'admin') return null;
 
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const resizeMessageInput = () => {
+    const textarea = messageInputRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const computedStyle = window.getComputedStyle(textarea);
+    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
+    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
+    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
+    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
+
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+  };
+
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
       <AnimatePresence>
@@ -221,7 +238,9 @@ export default function ChatWidget() {
                       <div className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${
                         isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-[#1a1a2e] text-gray-200 rounded-bl-none'
                       }`}>
-                        {msg.message && <div>{msg.message}</div>}
+                        {msg.message && (
+                          <div className="whitespace-pre-wrap break-words">{msg.message}</div>
+                        )}
                         {msg.imageUrl && (
                           <div className="mt-1">
                             {isVideo(msg.imageUrl) ? (
@@ -280,18 +299,23 @@ export default function ChatWidget() {
                   {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageIcon size={18} />}
                 </Button>
                 <textarea 
-                  placeholder={t('supportPlaceholder')} 
-                  className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
-                  value={newMessage}
-                  onChange={e => setNewMessage(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault(); // chặn xuống dòng mặc định
-                      handleSendMessage();
-                    }
-                  }}
-                  disabled={isUploading}
-                />
+                    ref={messageInputRef}
+                    placeholder={t('supportPlaceholder')} 
+                    className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
+                    rows={1}
+                    value={newMessage}
+                    onChange={e => {
+                      setNewMessage(e.target.value);
+                      resizeMessageInput();
+                    }}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault(); // chặn xuống dòng mặc định
+                        handleSendMessage();
+                      }
+                    }}
+                    disabled={isUploading}
+                  />
                 {/* <input 
                   type="text" 
                   placeholder={t('supportPlaceholder')} 

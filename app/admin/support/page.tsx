@@ -239,6 +239,23 @@ export default function AdminSupportPage() {
 
   if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center text-gray-500">{t('loading')}</div>;
 
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const resizeMessageInput = () => {
+    const textarea = messageInputRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const computedStyle = window.getComputedStyle(textarea);
+    const lineHeight = parseFloat(computedStyle.lineHeight || '20');
+    const paddingTop = parseFloat(computedStyle.paddingTop || '0');
+    const paddingBottom = parseFloat(computedStyle.paddingBottom || '0');
+    const maxHeight = lineHeight * 2 + paddingTop + paddingBottom;
+
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+  };
+
   return (
     <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
       <AdminHeader />
@@ -428,7 +445,25 @@ export default function AdminSupportPage() {
                   >
                     {isUploading ? <ImageIcon size={20} className="animate-pulse text-blue-500" /> : <ImageIcon size={20} />}
                   </Button>
-                  <input 
+                  <textarea 
+                    ref={messageInputRef}
+                    placeholder={`${t('support')}...`} 
+                    className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white resize-none"
+                    rows={1}
+                    value={newMessage}
+                    onChange={e => {
+                      setNewMessage(e.target.value);
+                      resizeMessageInput();
+                    }}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault(); // chặn xuống dòng mặc định
+                        handleSendMessage();
+                      }
+                    }}
+                    disabled={isUploading}
+                  />
+                  {/* <input 
                     type="text" 
                     placeholder={`${t('support')}...`} 
                     className="flex-1 bg-[#111] border border-[#1a1a2e] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500"
@@ -436,7 +471,7 @@ export default function AdminSupportPage() {
                     onChange={e => setNewMessage(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                     disabled={isUploading}
-                  />
+                  /> */}
                   <Button 
                     onClick={() => handleSendMessage()}
                     className="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-xl flex items-center justify-center p-0 shrink-0"
